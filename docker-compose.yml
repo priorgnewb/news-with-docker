@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  postgres:
+    build: ./docker/postgres/
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=news_db
+      - POSTGRES_PASSWORD=postgres
+    restart: always
+    volumes:
+      - db-volume:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+  news:
+    build: ./news/
+    image: news
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+    restart: always
+volumes:
+  db-volume:
